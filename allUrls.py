@@ -7,15 +7,21 @@ def allUrls(allLinks, file):
     try:
         print('Gathering URLs\n')
         for url in allLinks:
-            print(f'url: {url}')
             if type(url) == str and re.match('^http', url):
                 result = requests.get(url)
                 soup = BeautifulSoup(result.content, 'html.parser')
                 
                 for link in soup.find_all('a'):
-                    if type(link.get('href')) == str and re.match('^http', link.get('href')):
-                        file.write(link.get('href'))
-                        file.write('\n')
+                    newLink = link.get('href')
+                    if type(newLink) == str:
+                        if re.match('^http', newLink):
+                            file.write(newLink)
+                            file.write('\n')
+                        elif re.match('^/', newLink):
+                            auxLink = url + newLink
+                            file.write(auxLink)
+                            file.write('\n')
+                        
         file.flush()
         file.close()
         removeDuplicate('links.txt')
