@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from removeDuplicate import removeDuplicate
 
 def allUrls(allLinks, file):
     try:
